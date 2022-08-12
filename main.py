@@ -7,7 +7,7 @@ import time
 import pyautogui
 import re
 import psutil
-from lib.sound import Sound
+from neclib.sound import Sound
 
 
 sr = speech_recognition.Recognizer()
