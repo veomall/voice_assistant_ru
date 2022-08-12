@@ -1,6 +1,5 @@
 import speech_recognition
 import webbrowser
-from telethon import TelegramClient
 from datetime import datetime
 import os
 import pyttsx3
@@ -10,9 +9,6 @@ import re
 import psutil
 from lib.sound import Sound
 
-
-api_id = 16694872
-api_hash = '98daacb8cb7d382f97c74306a5e942ff'
 
 sr = speech_recognition.Recognizer()
 sr.pause_threshold = 0.5
@@ -30,7 +26,6 @@ commands_dict = {
         "clear_todo_list": ['очисти список дел', "очисти список", 'очисти заметики'],
         'play_music': ["включи музыку", "музыка"],
         'yandex_search': ['найди в интернете', "найди в сети", "найди в яндексе", "поиск"],
-        'send_message': ['отправь сообщение', "напиши сообщение", "напиши"],
         'open_youtube': ["открой youtube", 'youtube'],
         'search_in_youtube': ["найди в youtube"],
         'current_time': ["который час", "сколько время", "который сейчас час", "текущее время"],
@@ -47,20 +42,8 @@ commands_dict = {
         'new_browser_window': ["новое окно", "открой новое окно"],
         'new_incognito_window': ["анонимное окно", "открой анонимное окно"],
         'close_tab': ["закрой вкладку"],
-        'close_window': ["закрой окно"],
+        'close_window': ["закрой окно", "закрой приложение"],
     },
-    'names': {
-        '@ch1r1nk0v': ["зубков", "артур", "зубков артур", "артур зубков"],
-        '@Ender8991': ["метельский", "андрей", "метельский андрей", "андрей метельский"],
-        '@ene_gue': ["минец", "женя", "минец женя", "женя минец"],
-        '@gauntether': ["денисюк", "артем", "денисюк артем", "артем денисюк"],
-        1216036752: ["кошлатый", "кирилл", "кошлатый кирилл", "кирилл кошлатый"],
-    },
-    'programs': {
-        'muck': ['mac', 'мак'],
-        'scrcpy': ['screen copy', 'транслировать экран', "скрин копия"],
-        'unity hub': ["юнити хаб"],
-    }
 }
 
 
@@ -152,27 +135,6 @@ def yandex_search():
     search = '+'.join(words)
     webbrowser.open(f'https://yandex.ru/search/?clid=1882628&text={search}&l10n=ru&lr=21392', new=2)
     return f'Ищу {query} в Яндексе'
-
-
-def send_message():
-    # Отправка сообщений
-    print("Кому написать?")
-    voice_text("Кому написать?")
-    name = listen_command()
-    user = ''
-    for k, v in commands_dict['names'].items():
-        if name in v:
-            user = k
-            break
-    print("Что написать?")
-    voice_text("Что написать?")
-    message = listen_command()
-    with TelegramClient('anon', api_id, api_hash) as client:
-        try:
-            client.loop.run_until_complete(client.send_message(user, message))
-        except:
-            print(user, message)
-    return f'Написал {message} пользователю {name}'
 
 
 def open_youtube():
